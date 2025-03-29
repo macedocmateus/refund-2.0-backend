@@ -14,6 +14,7 @@ routes.use("/sessions", sessionsRoutes);
 
 //Rotas privadas
 routes.use(ensureAuthenticated);
+
 routes.use("/refunds", refundsRoutes);
 
 export { routes };
