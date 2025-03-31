@@ -45,6 +45,29 @@ class RefundsController {
 
         response.status(201).json();
     }
+
+    async index(request: Request, response: Response) {
+        const querySchema = z.object({
+            name: z.string().optional().default(""),
+        });
+
+        // Listando as refunds com filtro de busca de nome de usuário
+        const { name } = querySchema.parse(request.query);
+
+        const refunds = await prisma.refunds.findMany({
+            where: {
+                user: {
+                    name: {
+                        contains: name.trim(),
+                    },
+                },
+            },
+            orderBy: { createdAt: "desc" },
+            include: { user: true },
+        });
+
+        response.json(refunds);
+    }
 }
 
 export { RefundsController };
